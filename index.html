@@ -1,0 +1,545 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Diwali | Sugat Bramhane</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: radial-gradient(circle at top, #51200d, #160a08 65%, #080505);
+    color: #fff4d1;
+    font-family: Georgia, serif;
+    text-align: center;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, #ffb52c18 1px, transparent 2px);
+    background-size: 35px 35px;
+    pointer-events: none;
+}
+
+.container {
+    min-height: 100vh;
+    padding: 80px 15px 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Fairy Lights */
+.lights {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 5px;
+    z-index: 5;
+}
+
+.bulb {
+    width: 13px;
+    height: 18px;
+    border-radius: 50%;
+    background: #51412a;
+}
+
+body.active .bulb {
+    animation: lightGlow .8s infinite alternate;
+}
+
+.bulb:nth-child(2n) { animation-delay: .3s; }
+.bulb:nth-child(3n) { animation-delay: .6s; }
+
+@keyframes lightGlow {
+    from {
+        background: #ffdc63;
+        box-shadow: 0 0 8px #ffbd37;
+    }
+    to {
+        background: #ff6b20;
+        box-shadow: 0 0 25px #ff9b24, 0 0 45px #ffbf40;
+    }
+}
+
+/* Main Card */
+.card {
+    max-width: 700px;
+    width: 100%;
+    padding: 35px 20px;
+    border: 1px solid #dca84980;
+    border-radius: 25px;
+    background: #32160bc9;
+    box-shadow: 0 0 50px #ff9f2330;
+    backdrop-filter: blur(12px);
+    z-index: 2;
+}
+
+.small-title {
+    color: #ffd777;
+    letter-spacing: 5px;
+    font-size: 13px;
+}
+
+h1 {
+    font-size: clamp(42px, 8vw, 75px);
+    margin: 22px 0;
+    color: #ffdf8c;
+    text-shadow: 0 0 15px #ff9e20, 0 0 35px #ffae36;
+}
+
+.subtitle {
+    color: #ffe7b0;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+.diyas {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    margin: 35px 0;
+}
+
+.diya {
+    font-size: 55px;
+    filter: grayscale(.8);
+    transition: .5s;
+}
+
+body.active .diya {
+    filter: none;
+    animation: diyaGlow 1s infinite alternate;
+}
+
+@keyframes diyaGlow {
+    from {
+        transform: translateY(0);
+        filter: drop-shadow(0 0 5px orange);
+    }
+    to {
+        transform: translateY(-5px);
+        filter: drop-shadow(0 0 22px gold);
+    }
+}
+
+/* Button */
+button {
+    background: linear-gradient(135deg, #ffd76a, #ff9b22, #d66a13);
+    color: #351306;
+    border: 1px solid #ffe7a1;
+    border-radius: 50px;
+    padding: 17px 35px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 20px #ffae35;
+    transition: .3s;
+}
+
+button:hover {
+    transform: scale(1.07);
+    box-shadow: 0 0 35px #ffc34c;
+}
+
+.message {
+    display: none;
+    margin-top: 28px;
+    line-height: 2;
+    color: #ffe5a8;
+    animation: appear 2s ease;
+}
+
+body.active .message {
+    display: block;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.regards {
+    margin-top: 25px;
+    color: #ffcc70;
+    letter-spacing: 2px;
+    font-size: 15px;
+}
+
+.music-note {
+    color: #e9c99a;
+    font-size: 12px;
+    margin-top: 18px;
+}
+
+/* Fireworks */
+#fireworks {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* Sparkles */
+.sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 3;
+    animation: sparkleMove 2.5s linear forwards;
+}
+
+@keyframes sparkleMove {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(.3);
+    }
+    20% { opacity: 1; }
+    100% {
+        opacity: 0;
+        transform: translateY(-130px) scale(1.5);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="lights" id="lights"></div>
+<canvas id="fireworks"></canvas>
+
+<div class="container">
+    <div class="card">
+
+        <div class="small-title">✨ THE FESTIVAL OF LIGHTS ✨</div>
+
+        <h1>Happy Diwali 🪔</h1>
+
+        <p class="subtitle">
+            May your life shine brighter than a thousand diyas,<br>
+            and your heart glow with endless happiness.
+        </p>
+
+        <div class="diyas">
+            <div class="diya">🪔</div>
+            <div class="diya">🪔</div>
+            <div class="diya">🪔</div>
+        </div>
+
+        <button id="celebrateBtn" onclick="celebrate()">
+            ✨ Celebrate Diwali ✨
+        </button>
+
+        <div class="message" id="message">
+            <h2>🪷 शुभ दीपावली 🪷</h2>
+
+            <p>
+                May Goddess Lakshmi bless your home<br>
+                with prosperity, peace and happiness.<br>
+                May every diya remove darkness<br>
+                and every sparkle bring a new hope.
+            </p>
+
+            <p style="margin-top:20px">
+                🌟 Spread Happiness • Share Love • Shine Bright 🌟
+            </p>
+        </div>
+
+        <div class="regards">
+            WITH BEST WISHES & REGARDS<br>
+            <strong>💛 SUGAT BRAMHANE 💛</strong>
+        </div>
+
+        <p class="music-note">
+            🎵 Enjoy the Festival of Lights with Music!
+        </p>
+
+    </div>
+</div>
+
+<!-- Your Background Music -->
+<audio id="music" loop></audio>
+
+<script>
+
+/* =================================
+   ADD YOUR OWN MUSIC HERE
+================================= */
+
+const MUSIC_URL ="diwali song.mp3";
+
+const music = document.getElementById("music");
+music.src = MUSIC_URL;
+music.volume = 0.5;
+
+/* Create Fairy Lights */
+
+const lights = document.getElementById("lights");
+
+for(let i = 0; i < 35; i++) {
+    const bulb = document.createElement("div");
+    bulb.className = "bulb";
+    lights.appendChild(bulb);
+}
+
+/* Fireworks Canvas */
+
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+let running = false;
+let animationId;
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+resize();
+window.addEventListener("resize", resize);
+
+function createFirework(x, y) {
+
+    const colors = [
+        "#ffd700", "#ff5e00", "#ff69b4",
+        "#00ffff", "#ffffff", "#adff2f"
+    ];
+
+    const color = colors[
+        Math.floor(Math.random() * colors.length)
+    ];
+
+    for(let i = 0; i < 65; i++) {
+
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 5 + 1;
+
+        particles.push({
+            x, y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            alpha: 1,
+            color
+        });
+    }
+}
+
+function animate() {
+
+    if(!running) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for(let i = particles.length - 1; i >= 0; i--) {
+
+        const p = particles[i];
+
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.035;
+        p.alpha -= 0.012;
+
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = p.color;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        if(p.alpha <= 0) {
+            particles.splice(i, 1);
+        }
+    }
+
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
+
+    animationId = requestAnimationFrame(animate);
+}
+
+/* Celebration Sound */
+
+let audioContext;
+
+function crackerSound() {
+
+    try {
+
+        audioContext = audioContext ||
+            new (window.AudioContext || window.webkitAudioContext)();
+
+        if(audioContext.state === "suspended") {
+            audioContext.resume();
+        }
+
+        const duration = 0.35;
+
+        const buffer = audioContext.createBuffer(
+            1,
+            audioContext.sampleRate * duration,
+            audioContext.sampleRate
+        );
+
+        const data = buffer.getChannelData(0);
+
+        for(let i = 0; i < data.length; i++) {
+            data[i] = (Math.random() * 2 - 1) *
+                (1 - i / data.length);
+        }
+
+        const source = audioContext.createBufferSource();
+        const gain = audioContext.createGain();
+
+        source.buffer = buffer;
+
+        gain.gain.setValueAtTime(
+            0.0001, audioContext.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.12, audioContext.currentTime + 0.015
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.0001, audioContext.currentTime + duration
+        );
+
+        source.connect(gain);
+        gain.connect(audioContext.destination);
+        source.start();
+
+    } catch(error) {
+        console.log("Audio unavailable");
+    }
+}
+
+/* Floating Sparkles */
+
+function addSparkle() {
+
+    const s = document.createElement("div");
+
+    s.className = "sparkle";
+
+    s.textContent = ["✨", "⭐", "💫"][
+        Math.floor(Math.random() * 3)
+    ];
+
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.top = (30 + Math.random() * 65) + "vh";
+    s.style.fontSize = (15 + Math.random() * 25) + "px";
+
+    document.body.appendChild(s);
+
+    setTimeout(() => s.remove(), 2500);
+}
+
+/* One Button Controls Everything */
+
+let celebrated = false;
+let fireworkTimer;
+let sparkleTimer;
+
+async function celebrate() {
+
+    const btn = document.getElementById("celebrateBtn");
+
+    if(celebrated) {
+
+        celebrated = false;
+        running = false;
+
+        clearInterval(fireworkTimer);
+        clearInterval(sparkleTimer);
+
+        cancelAnimationFrame(animationId);
+
+        document.body.classList.remove("active");
+
+        particles = [];
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        music.pause();
+
+        btn.textContent = "✨ Celebrate Diwali ✨";
+
+        return;
+    }
+
+    celebrated = true;
+    running = true;
+
+    document.body.classList.add("active");
+
+    btn.textContent = "🌙 Turn Celebration OFF";
+
+    /* Start Music */
+
+    if(audioContext && audioContext.state === "suspended") {
+        await audioContext.resume();
+    }
+
+    music.play().catch(error => {
+        console.log("Please check your music file path.", error);
+    });
+
+    /* Start Fireworks */
+
+    animate();
+
+    fireworkTimer = setInterval(() => {
+
+        if(!celebrated) return;
+
+        createFirework(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height * 0.65
+        );
+
+        crackerSound();
+        addSparkle();
+
+    }, 650);
+
+    /* Extra Sparkles */
+
+    sparkleTimer = setInterval(() => {
+
+        if(celebrated) {
+            addSparkle();
+        }
+
+    }, 300);
+}
+
+</script>
+
+</body>
+</html>
